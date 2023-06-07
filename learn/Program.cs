@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Text.Json;
 
@@ -12,7 +12,7 @@ class Program
         string hmmObservationJson;
         if (String.IsNullOrWhiteSpace(hmmSimplePath))
         {
-            Console.WriteLine("No filepath provided for input, exiting.");
+            Console.WriteLine("Kein Dateipfad für die Eingabe angegeben.");
             return;
         }
 
@@ -23,7 +23,7 @@ class Program
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error while reading the input file: {ex.ToString()}");
+            Console.WriteLine($"Fehler beim Lesen der Eingabedatei: {ex.ToString()}");
             return;
         }
 
@@ -43,26 +43,27 @@ class Program
         }
         else
         {
-            Console.WriteLine("Invalid input. Enter 'f' or 'v'.");
+            Console.WriteLine("Ungültige Eingabe.");
         }
     }
 
     static void RunViterbiAlgorithm(HmmSimple? hmmSimple, string[]? hmmObservation)
     {
         Console.WriteLine("Running Viterbi Algorithm");
+        // Öffne eine neue Datei oder überschreibe eine vorhandene Datei
         using (StreamWriter writer = new StreamWriter("hmm_output_viterbi.json"))
         {
             int[,] argmax = new int[hmmObservation.Length, hmmSimple.states.Length];
             double[,] delta = new double[hmmObservation.Length, hmmSimple.states.Length];
 
-            // initialisiere delta und argmax für t = 0
+            // Initialisierung -> delta und argmax für t = 0
             for (int j = 0; j < hmmSimple.states.Length; j++)
             {
                 delta[0, j] = hmmSimple.initial_distribution[j] * hmmSimple.output_probabilities.GetProbability(j, Array.IndexOf(hmmSimple.alphabet, hmmObservation[0]));
                 argmax[0, j] = 0;
             }
 
-            // berechne delta und argmax für t > 0
+            // Rekursion -> berechne delta und argmax für t > 0
             for (int t = 1; t < hmmObservation.Length; t++)
             {
                 for (int j = 0; j < hmmSimple.states.Length; j++)
@@ -83,7 +84,7 @@ class Program
                 }
             }
 
-            // finde das Ende des Pfads durch Rückverfolgung von argmax
+            // Terminierung+Pfadermittlung -> finde das Ende des Pfads durch Rückverfolgung von argmax
             int[] path = new int[hmmObservation.Length];
             double maxDeltaEnd = 0.0;
             int argmaxDeltaEnd = 0;
@@ -115,13 +116,13 @@ class Program
         {
         double[,] alpha = new double[hmmObservation.Length, hmmSimple.states.Length];
 
-        // initialisiere alpha für t = 0
+        // Initialisierung -> alpha für t = 0
         for (int j = 0; j < hmmSimple.states.Length; j++)
         {
             alpha[0, j] = hmmSimple.initial_distribution[j] * hmmSimple.output_probabilities.GetProbability(j, Array.IndexOf(hmmSimple.alphabet, hmmObservation[0]));
         }
 
-        // berechne alpha für t > 0
+        // Rekursion -> berechne alpha für t > 0
         for (int t = 1; t < hmmObservation.Length; t++)
         {
             for (int j = 0; j < hmmSimple.states.Length; j++)
@@ -135,7 +136,7 @@ class Program
             }
         }
 
-        // berechne die Gesamt-Wahrscheinlichkeit der Beobachtungen
+        // Terminierung -> berechne die Gesamt-Wahrscheinlichkeit der Beobachtungen
         double p = 0.0;
         for (int j = 0; j < hmmSimple.states.Length; j++)
         {
