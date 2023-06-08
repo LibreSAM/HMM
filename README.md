@@ -8,7 +8,7 @@
 
 ## TOC
 
-- [Aufgabe 3 - HIDDEN MARKOV MODELS](#aufgabe-3---HIDDEN MARKOV MODELS)
+- [Aufgabe 3 - HIDDEN MARKOV MODELS](#aufgabe-3---hidden-markov-models)
   - [TOC](#toc)
   - [Bauen der Programme](#bauen-der-programme)
   - [Starten der Programme](#starten-der-programme)
@@ -50,13 +50,13 @@ Auf Basis des zuvor erstellten Docker-Images können die Anwendungungen innerhal
  - Einlesen der HMM_Observation.json
  - Dateien werden mit .ReadAllText eingelesen -> Annahme dass die Daten im richtigen Format vorliegen
  - Abbildung der Daten auf sequenzielle Darstellungsform (hmmSimpleJson/hmmObservationJson)
- - Initialisieren des 5-Tupel im Objekt hmmSimple -> vgl. PDF-Seite 21 "Ein HMM ist ein 5-Tupel" (HMM-Foliensatz)
+ - Initialisieren des 5-Tupel im Objekt hmmSimple -> 'vgl. PDF-Seite 21 "Ein HMM ist ein 5-Tupel" (HMM-Foliensatz)'
  - Gewünschter Algorithmus durch Übergabeparameter -f oder -v definieren
  - Funktionsaufruf des entsprechendem Algorithmus mit Übergabe von hmmSimple und hmmObservation
 
 ## Ablauf des Forward Algorthmus
 
-vgl. PDF-Seite 52 (HMM-Foliensatz)
+'vgl. PDF-Seite 52 (HMM-Foliensatz)'
  - Zuerst wird die Matrix "alpha", mit der Dimension [Anzahl der Beobachtungen] mal [Anzahl der Zustände], für t=0 berechnet (Wahrscheinlichkeit für jeden Zustand "j") -> for-Schleife mit Anzahl der Zustände
  - Dabei wird die Startverteilung mit der Ausgabewahrscheinlichkeit des aktuellen Zustands und der ersten Beobachtung multipliziert
  - Rekursive Berechnung der alpha-Werte: t>0 Wahrscheinlichkeit für jeden Zustand 'j' basierend auf vorherige Alpha-Werte -> verschachtelte for-Schleife
@@ -66,7 +66,7 @@ vgl. PDF-Seite 52 (HMM-Foliensatz)
 
 ## Ablauf des Viterbi Algorthmus
 
-wie Forward aber argmax statt E (Summe)  -> vgl. PDF-Seite 55 (HMM-Foliensatz)
+'wie Forward aber argmax statt E (Summe)  -> vgl. PDF-Seite 55 (HMM-Foliensatz)'
  - Initialisierung von 'argmax'- und 'delta'-Matrix (Dimension Anzahl Beobachtungen und Anzahl Zustände -> Länge von hmmObservation und hmmSimple.states) -> for-Schleife mit Anzahl der Zustände
  - 'argmax'- und 'delta'-Werte für ersten Zeitpunkt (t=0) -> Produkt aus Startverteilung und Ausgabewahrscheinlichkeit von aktuell 'j' und ersten Beobachtung in Delta
  - Rekursive Berechnung von 'argmax'- und 'delta'-Werten: t>0 'argmax'- und 'delta'-Werte basierend auf vorherigen Wert berechnen -> verschachtelte for-Schleife
