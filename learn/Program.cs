@@ -1,18 +1,30 @@
 ﻿using System;
 using System.IO;
+﻿using System.Text;
 using System.Text.Json;
+using CommandLine;
+
+namespace Learn;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Geben Sie den Pfad zur JSON-Datei ein:");
-        string hmmSimplePath = Console.ReadLine();
+        Parser.Default.ParseArguments<LearnOptions>(args).WithParsed<LearnOptions>(Learn);
+    }
+
+    public static void Learn(LearnOptions options)
+    {
+        //Console.WriteLine("Geben Sie den Pfad zur JSON-Datei ein:");
+        //string hmmSimplePath = Console.ReadLine();
+
+        string hmmSimplePath = options.InputFilePath;
         string hmmSimpleJson;
         string hmmObservationJson;
+        
         if (String.IsNullOrWhiteSpace(hmmSimplePath))
         {
-            Console.WriteLine("Kein Dateipfad für die Eingabe angegeben.");
+            Console.WriteLine("Datei wurde nicht gefunden.");
             return;
         }
 
@@ -30,20 +42,20 @@ class Program
         var hmmSimple = JsonSerializer.Deserialize<HmmSimple>(hmmSimpleJson);
         var hmmObservation = JsonSerializer.Deserialize<string[]>(hmmObservationJson);
 
-        Console.WriteLine("Wählen Sie den Algorithmus 'f' für Forward-Algorithmus, 'v' für Viterbi-Algorithmus:");
-        string userInput = Console.ReadLine();
+        //Console.WriteLine("Wählen Sie den Algorithmus 'f' für Forward-Algorithmus, 'v' für Viterbi-Algorithmus:");
+        //string userInput = Console.ReadLine();
         
-        if (userInput == "f")
+        if (options.forward)
         {
             RunForwardAlgorithm(hmmSimple, hmmObservation);
         }
-        else if (userInput == "v")
+        else if (options.viterbi)
         {
             RunViterbiAlgorithm(hmmSimple, hmmObservation);
         }
         else
         {
-            Console.WriteLine("Ungültige Eingabe.");
+            Console.WriteLine("Ungültige Eingabe. -f für ForwardAlgorithmus oder -v für ViterbiAlgorithmus.");
         }
     }
 
@@ -103,6 +115,7 @@ class Program
                 path[t] = argmax[t + 1, path[t + 1]];
             }
 
+            //Ausgabe in hmm_output_viterbi.json und Konsole
             writer.WriteLine($"[\"{string.Join("\", \"", path.Select(i => hmmSimple.states[i]))}\"]");
             Console.WriteLine($"Path: {string.Join(", ", path.Select(i => hmmSimple.states[i]))}");
         }
@@ -143,6 +156,7 @@ class Program
             p += alpha[hmmObservation.Length - 1, j];
         }
 
+        //Ausgabe in hmm_output_forward.txt und Konsole -> Gesamt-Wahrscheinlichkeit
         writer.WriteLine($"{p}");
         Console.WriteLine($"Forward Algorithm Result: {p}");
         }
