@@ -3,10 +3,13 @@
 namespace Learn;
 public class LearnOptions
 {
-    [Option('i', "inputFilePath", Required = true, HelpText = "Path to file with input text to learn.")]
+    [Option('h', "hmmFilePath", Required = true, HelpText = "Path to file with hmm.")]
     public string InputFilePath { get; set; } = "";
 
-    [Option('f', "forwardAlg", Required = true, HelpText = "Run Forward Algorithmus.")]
+    [Option('o', "observationFilePath", Required = true, HelpText = "Path to file with observation.")]
+    public string ObservationFilePath { get; set; } = "";
+
+    [Option('f', "forwardAlg", Required = false, HelpText = "Run Forward Algorithmus.")]
     public bool forward { get; set; }
 
     [Option('v', "viterbiAlg", Required = false, HelpText = "Run Viterbi Algorithmus.")]

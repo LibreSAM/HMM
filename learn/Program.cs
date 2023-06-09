@@ -20,18 +20,25 @@ class Program
 
         string hmmSimplePath = options.InputFilePath;
         string hmmSimpleJson;
+        string hmmObservationPath = options.ObservationFilePath;
         string hmmObservationJson;
         
         if (String.IsNullOrWhiteSpace(hmmSimplePath))
         {
-            Console.WriteLine("Datei wurde nicht gefunden.");
+            Console.WriteLine("HMM-Datei wurde nicht gefunden.");
+            return;
+        }
+
+        if (String.IsNullOrWhiteSpace(hmmObservationPath))
+        {
+            Console.WriteLine("Observation-Datei wurde nicht gefunden.");
             return;
         }
 
         try
         {
             hmmSimpleJson = File.ReadAllText(hmmSimplePath);
-            hmmObservationJson = File.ReadAllText("hmm_observation.json");
+            hmmObservationJson = File.ReadAllText(hmmObservationPath);
         }
         catch (Exception ex)
         {
@@ -63,7 +70,7 @@ class Program
     {
         Console.WriteLine("Running Viterbi Algorithm");
         // Öffne eine neue Datei oder überschreibe eine vorhandene Datei
-        using (StreamWriter writer = new StreamWriter("hmm_output_viterbi.json"))
+        using (StreamWriter writer = new StreamWriter("../data/hmm_output_viterbi.json"))
         {
             int[,] argmax = new int[hmmObservation.Length, hmmSimple.states.Length];
             double[,] delta = new double[hmmObservation.Length, hmmSimple.states.Length];
@@ -117,6 +124,7 @@ class Program
 
             //Ausgabe in hmm_output_viterbi.json und Konsole
             writer.WriteLine($"[\"{string.Join("\", \"", path.Select(i => hmmSimple.states[i]))}\"]");
+            Console.WriteLine("File \"hmm_output_viterbi.json\" was created.");
             Console.WriteLine($"Path: {string.Join(", ", path.Select(i => hmmSimple.states[i]))}");
         }
     }
@@ -125,7 +133,7 @@ class Program
     {
         Console.WriteLine("Running Forward Algorithm");
         // Öffne eine neue Datei oder überschreibe eine vorhandene Datei
-        using (StreamWriter writer = new StreamWriter("hmm_output_forward.txt"))
+        using (StreamWriter writer = new StreamWriter("../data/hmm_output_forward.txt"))
         {
         double[,] alpha = new double[hmmObservation.Length, hmmSimple.states.Length];
 
@@ -158,6 +166,7 @@ class Program
 
         //Ausgabe in hmm_output_forward.txt und Konsole -> Gesamt-Wahrscheinlichkeit
         writer.WriteLine($"{p}");
+        Console.WriteLine("File \"hmm_output_forward.txt\" was created.");
         Console.WriteLine($"Forward Algorithm Result: {p}");
         }
     }
