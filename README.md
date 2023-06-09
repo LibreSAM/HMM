@@ -41,11 +41,11 @@ Auf Basis des zuvor erstellten Docker-Images können die Anwendungungen innerhal
   - Programm `Learn`
   - HMM-Datei `/data/hmm_simple.json`
   - Observation-Datei `/data/hmm_observation.json`
-  - Algorithmus: Forward
+  - Algorithmus `Forward`
   - Datenaustausch zwischen Host und Container über Volume, Pfad zum Volume `./data`
   - Als Befehl ergibt sich hieraus in Windows:  
     `docker run -v %cd%/data:/data hmm_main dotnet Learn.dll -h /data/hmm_simple.json -o /data/hmm_observation.json -f`
-  - Als Befehl ergibt sich hieraus in Windows:  
+  - Als Befehl ergibt sich hieraus in Linux:  
     `docker run -v $(pwd)/data:/data hmm_main dotnet Learn.dll -h /data/hmm_simple.json -o /data/hmm_observation.json -f`
   - Zum Ausühren müssen Sie sich im HMM-Verzeichnis befinden, in welchem sich die Ordner app, date, Docker und gradle befinden
   - Die Output-Files werden im Ordner data abgelegt, der Name hierfür ist im Code festgelegt
