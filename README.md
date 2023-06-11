@@ -1,5 +1,7 @@
 # Aufgabe 3 - HIDDEN MARKOV MODELS
 
+- Link zum Repo: [github.com/LibreSAM/Language-Model](https://github.com/LibreSAM/HMM)
+
 | Gruppenmitglieder |
 |-|
 | Robin Augenstein |
